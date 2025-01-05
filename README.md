@@ -13,6 +13,12 @@
 pip install soilspecdata
 ```
 
+If you want to install the development version, run in the project root:
+
+``` sh
+pip install -e .[dev]
+```
+
 ## Features
 
 - Easy loading and handling of OSSL dataset
@@ -77,11 +83,30 @@ X.shape, y.shape, ids.shape
 
     ((57062, 1701), (57062, 1), (57062,))
 
+- Plot the first 20 MIR spectra:
+
+``` python
+from matplotlib import pyplot as plt
+
+plt.figure(figsize=(12, 3))
+plt.plot(mir_data.wavenumbers, mir_data.spectra[:20,:].T, alpha=0.3, color='steelblue', lw=1)
+plt.gca().invert_xaxis()
+plt.grid(True, linestyle='--', alpha=0.7)
+
+plt.xlabel('Wavenumber (cm⁻¹)')
+plt.ylabel('Absorbance');
+```
+
+![](index_files/figure-commonmark/cell-9-output-1.png)
+
 ## Data Structure
 
-The package returns spectra data in a structured format containing: -
-Wavenumbers - Spectra measurements - Measurement type
-(reflectance/absorbance) - Sample IDs
+The package returns spectra data in a structured format containing:
+
+- Wavenumbers
+- Spectra measurements
+- Measurement type (reflectance/absorbance)
+- Sample IDs
 
 Properties and metadata are returned as pandas DataFrames indexed by
 sample ID.
