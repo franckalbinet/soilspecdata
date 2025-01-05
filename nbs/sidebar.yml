@@ -1,0 +1,8 @@
+website:
+  sidebar:
+    contents:
+      - index.ipynb
+      - section: "Source"
+        contents:
+          - 00_types.ipynb
+          - 01_datasets.ossl.ipynb

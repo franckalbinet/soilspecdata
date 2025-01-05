@@ -1,37 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
 .cell {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
-.cell > .sourceCode {
-  margin-bottom: 0;
+.cell>.sourceCode {
+    margin-bottom: 0;
 }
 
-.cell-output > pre {
-  margin-bottom: 0;
+.cell-output>pre {
+    margin-bottom: 0;
 }
 
-.cell-output > pre, .cell-output > .sourceCode > pre, .cell-output-stdout > pre {
-  margin-left: 0.8rem;
-  margin-top: 0;
-  background: none;
-  border-left: 2px solid lightsalmon;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.cell-output>pre,
+.cell-output>.sourceCode>pre,
+.cell-output-stdout>pre {
+    margin-left: 0.8rem;
+    margin-top: 0;
+    background: none;
+    border-left: 2px solid lightsalmon;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
-.cell-output > .sourceCode {
-  border: none;
+.cell-output>.sourceCode {
+    border: none;
 }
 
-.cell-output > .sourceCode {
-  background: none;
-  margin-top: 0;
+.cell-output>.sourceCode {
+    background: none;
+    margin-top: 0;
 }
 
 div.description {
-  padding-left: 2px;
-  padding-top: 5px;
-  font-style: italic;
-  font-size: 135%;
-  opacity: 70%;
+    padding-left: 2px;
+    padding-top: 5px;
+    font-style: italic;
+    font-size: 135%;
+    opacity: 70%;
+}
+
+.navbar {
+    background-color: #3a6494
+}
+
+.navbar-brand {
+    text-transform: none;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+
+    background-image: url('./img/logo.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 40px 40px;
+    /* Increased logo size */
+
+    padding-left: 50px;
+    /* Increased to add more space between logo and text */
+    height: 40px;
+    line-height: 40px;
+    /* Ensures vertical centering of text */
+
+    display: flex;
+    align-items: center;
+    /* This helps with vertical alignment */
 }
