@@ -16,3 +16,26 @@ class SpectraData:
     spectra: np.ndarray
     measurement_type: str
     sample_ids: np.ndarray  # Adding sample IDs to maintain relationships
+    
+    def __str__(self):
+        """Pretty print the SpectraData object"""
+        sections = [
+            ("SpectraData attributes", f"Available attributes: {', '.join(vars(self).keys())}"),
+            
+            ("Wavenumbers", 
+             f"{np.array2string(self.wavenumbers[:10], precision=2, separator=', ')}\n"
+             f"Shape: {self.wavenumbers.shape}"),
+            
+            ("Spectra", 
+             f"{np.array2string(self.spectra[:5,:5], precision=4, separator=', ')}\n"
+             f"Shape: {self.spectra.shape}"),
+            
+            ("Measurement type (Reflectance or Absorbance)", self.measurement_type),
+            
+            ("Sample IDs", 
+             f"{np.array2string(self.sample_ids[:10], separator=', ')}\n"
+             f"Total samples: {len(self.sample_ids)}")
+        ]
+        
+        return '\n\n'.join(f"{title}:\n{'-'*len(title)}\n{content}" 
+                          for title, content in sections)

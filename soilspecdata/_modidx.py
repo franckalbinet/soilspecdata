@@ -31,4 +31,5 @@ d = { 'settings': { 'branch': 'main',
                                                                                            'soilspecdata/datasets/ossl.py'),
                                             'soilspecdata.datasets.ossl.get_ossl': ( 'datasets.ossl.html#get_ossl',
                                                                                      'soilspecdata/datasets/ossl.py')},
-            'soilspecdata.types': {'soilspecdata.types.SpectraData': ('types.html#spectradata', 'soilspecdata/types.py')}}}
+            'soilspecdata.types': { 'soilspecdata.types.SpectraData': ('types.html#spectradata', 'soilspecdata/types.py'),
+                                    'soilspecdata.types.SpectraData.__str__': ('types.html#spectradata.__str__', 'soilspecdata/types.py')}}}
