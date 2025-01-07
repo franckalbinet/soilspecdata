@@ -102,12 +102,15 @@ def _get_valid_spectra_mask(self:OSSLData, spectra_cols):
 # %% ../../nbs/01_datasets.ossl.ipynb 11
 @patch
 def _extract_wavenumbers(self:OSSLData, 
-                        cols: List[str] # column names
-                        ):
-    "Extract wavenumbers from column names"
-    return np.array([int(re.search(r'\.(\d+)_', c).group(1)) for c in cols])
+                         cols: List[str] # column names
+                         ):
+    "Extract wavelengths from column names and convert to wavenumbers for VISNIR"
+    ws = np.array([int(re.search(r'\.(\d+)_', c).group(1)) for c in cols])
+    if 'visnir' in cols[0].lower(): 
+        return np.array([int(1e7 / w) for w in ws])
+    return ws
 
-# %% ../../nbs/01_datasets.ossl.ipynb 13
+# %% ../../nbs/01_datasets.ossl.ipynb 14
 @patch
 def _extract_measurement_type(self:OSSLData, 
                               cols: List[str] # column names
@@ -117,16 +120,23 @@ def _extract_measurement_type(self:OSSLData,
     assert len(types) == 1, f"Mixed measurement types found: {types}"
     return types.pop()
 
-# %% ../../nbs/01_datasets.ossl.ipynb 15
+# %% ../../nbs/01_datasets.ossl.ipynb 16
 @patch
 def _filter_wavelength_range(self:OSSLData, 
                              wavenumbers: np.ndarray, # wavenumbers
                              spectra: np.ndarray, # spectra
                              cols: List[str], # column names
-                             wmin: Optional[float]=None, # min wavenumber
-                             wmax: Optional[float]=None # max wavenumber
+                             wmin: Optional[int]=None, # min wavenumber
+                             wmax: Optional[int]=None # max wavenumber
                              ):
-    "Filter spectra based on wavelength range"
+    "Filter spectra based on wavenumber range"
+    if wmin is not None:
+        assert wmin >= wavenumbers.min(), f"wmin ({wmin}) must be >= minimum wavenumber ({wavenumbers.min()})"
+    if wmax is not None:
+        assert wmax <= wavenumbers.max(), f"wmax ({wmax}) must be <= maximum wavenumber ({wavenumbers.max()})"
+    if wmin is not None and wmax is not None:
+        assert wmin < wmax, f"wmin ({wmin}) must be < wmax ({wmax})"
+        
     mask = np.ones(len(wavenumbers), dtype=bool)
     if wmin is not None:
         mask &= wavenumbers >= wmin
@@ -137,8 +147,8 @@ def _filter_wavelength_range(self:OSSLData,
 # %% ../../nbs/01_datasets.ossl.ipynb 18
 @patch 
 def get_visnir(self:OSSLData, 
-               wmin: Optional[float]=None, # min wavenumber
-               wmax: Optional[float]=None, # max wavenumber
+               wmin: Optional[int]=4000, # min wavenumber
+               wmax: Optional[int]=25000, # max wavenumber
                require_valid: bool=True # if True, only return samples with no null values
                ):
     "Get VISNIR spectra within specified wavenumber range"
@@ -158,13 +168,16 @@ def get_visnir(self:OSSLData,
         
     spectra = df_subset[filtered_cols].values
     measurement_type = self._extract_measurement_type(filtered_cols)
-    return SpectraData(wavenumbers, spectra, measurement_type, sample_ids)
+    return SpectraData(
+        wavenumbers[::-1], 
+        spectra[:, ::-1], 
+        measurement_type, sample_ids)
 
 # %% ../../nbs/01_datasets.ossl.ipynb 20
 @patch 
 def get_mir(self:OSSLData, 
-            wmin: Optional[float]=600, # min wavenumber
-            wmax: Optional[float]=4000, # max wavenumber
+            wmin: Optional[int]=600, # min wavenumber
+            wmax: Optional[int]=4000, # max wavenumber
             require_valid: bool=True # if True, only return samples with no null values
             ):
     "Get MIR spectra within specified wavenumber range"

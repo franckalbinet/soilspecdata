@@ -24,7 +24,7 @@ pip install -e .[dev]
 - Easy loading and handling of OSSL dataset
 - Support for both VISNIR (Visible Near-Infrared) and MIR (Mid-Infrared)
   spectral data
-- Flexible wavelength range filtering
+- Flexible wavenumber range filtering
 - Convenient access to soil properties and metadata
 - Automatic caching of downloaded data
 - Get aligned spectra and target variable(s)
@@ -43,6 +43,13 @@ from soilspecdata.datasets.ossl import get_ossl
 ossl = get_ossl()
 ```
 
+The spectral analysis covers both MIR `(400-4000 cm⁻¹)` and VISNIR
+`(4000-28571 cm⁻¹)` regions, with data reported in increasing
+wavenumbers for consistency across the entire spectral range.
+
+Ranges of interest can further be filtered using the `wmin` and `wmax`
+parameters in the `get_mir` and `get_visnir` methods.
+
 ### MIR spectra
 
 ``` python
@@ -54,7 +61,7 @@ mir_data = ossl.get_mir(require_valid=True)
 Using custom wavenumber range:
 
 ``` python
-visnir_data = ossl.get_visnir(wmin=500, wmax=1000, require_valid=True)
+visnir_data = ossl.get_visnir(wmin=4000, wmax=25000, require_valid=True)
 ```
 
 ### VISNIR \| MIR dataclass member variables
@@ -69,20 +76,20 @@ print(visnir_data)
 
     Wavenumbers:
     -----------
-    [500, 502, 504, 506, 508, 510, 512, 514, 516, 518]
-    Shape: (251,)
+    [4000, 4003, 4006, 4009, 4012, 4016, 4019, 4022, 4025, 4029]
+    Shape: (1051,)
 
     Spectra:
     -------
-    [[0.1565, 0.1579, 0.1593, 0.1608, 0.1623],
-     [0.1853, 0.1879, 0.1905, 0.1931, 0.1958],
-     [0.1864, 0.1888, 0.1913, 0.1938, 0.1965],
-     [0.0992, 0.1005, 0.1018, 0.1031, 0.1044],
-     [0.1272, 0.1288, 0.1304, 0.1321, 0.1338]]
-    Shape: (64644, 251)
+    [[0.3859, 0.3819, 0.3792, 0.3776, 0.3769],
+     [0.3429, 0.3419, 0.3414, 0.3413, 0.3415],
+     [0.3425, 0.3384, 0.3354, 0.3334, 0.3323],
+     [0.2745, 0.2754, 0.2759, 0.2761, 0.276 ],
+     [0.285 , 0.2794, 0.2755, 0.273 , 0.2718]]
+    Shape: (64644, 1051)
 
-    Measurement type:
-    ----------------
+    Measurement type (Reflectance or Absorbance):
+    --------------------------------------------
     ref
 
     Sample IDs:
@@ -246,7 +253,7 @@ ossl.properties_cols
 - Get metadata (e.g., geographical coordinates):
 
 ``` python
-metadata = ossl.get_properties([    'longitude.point_wgs84_dd', 'latitude.point_wgs84_dd'], require_complete=False)
+metadata = ossl.get_properties(['longitude.point_wgs84_dd', 'latitude.point_wgs84_dd'], require_complete=False)
 ```
 
 ### Preparing data for machine learning pipeline
