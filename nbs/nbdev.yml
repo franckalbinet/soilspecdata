@@ -2,7 +2,7 @@ project:
   output-dir: _docs
 
 website:
-  title: "soilspecdata"
+  title: "SoilSpecData"
   site-url: "https://franckalbinet.github.io/soilspecdata"
   description: "Download and load soil spectral data"
   repo-branch: main
