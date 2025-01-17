@@ -316,6 +316,12 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 Apache2
 
-## Citation
+## Citation(s)
 
-TBC
+- [OSSL
+  Library](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0296545):
+  Safanelli, J.L., Hengl, T., Parente, L.L., Minarik, R., Bloom, D.E.,
+  Todd-Brown, K., Gholizadeh, A., Mendes, W. de S., Sanderman, J., 2025.
+  Open Soil Spectral Library (OSSL): Building reproducible soil
+  calibration models through open development and community engagement.
+  PLOS ONE 20, e0296545. https://doi.org/10.1371/journal.pone.0296545
