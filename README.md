@@ -53,7 +53,7 @@ parameters in the `get_mir` and `get_visnir` methods.
 ### MIR spectra
 
 ``` python
-mir_data = ossl.get_mir(require_valid=True)
+mir_data = ossl.get_mir()
 ```
 
 ### VISNIR spectra
@@ -61,7 +61,7 @@ mir_data = ossl.get_mir(require_valid=True)
 Using custom wavenumber range:
 
 ``` python
-visnir_data = ossl.get_visnir(wmin=4000, wmax=25000, require_valid=True)
+visnir_data = ossl.get_visnir(wmin=4000, wmax=25000)
 ```
 
 ### VISNIR \| MIR dataclass member variables
@@ -108,7 +108,7 @@ properties = ossl.get_properties(['cec_usda.a723_cmolc.kg'], require_complete=Tr
 ```
 
 For more details on the OSSL dataset and its variables, see the [OSSL
-documentation](https://soilspectroscopy.github.io/ossl-manual/database-description.html).
+documentation](https://soilspectroscopy.github.io/ossl-manual/db-desc.html).
 Any column name part of the `ossl.properties_cols` list can be used as a
 target or metadatavariable.
 
@@ -269,7 +269,7 @@ X, y, ids = ossl.get_aligned_data(
 X.shape, y.shape, ids.shape
 ```
 
-    ((57062, 1701), (57062, 1), (57062,))
+    ((57064, 1701), (57064, 1), (57064,))
 
 And plot the first 20 MIR spectra:
 

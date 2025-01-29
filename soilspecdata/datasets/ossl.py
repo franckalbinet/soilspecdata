@@ -15,15 +15,18 @@ import numpy as np
 
 from ..types import *
 
-# %% ../../nbs/01_datasets.ossl.ipynb 3
+# %% ../../nbs/01_datasets.ossl.ipynb 5
 class OSSLData:
-    def __init__(self, df):
+    "OSSL (Open Soil Spectral Library) data container"
+    def __init__(self, 
+                 df: pd.DataFrame # dataframe containing OSSL data
+                 ):
         self.df = df
         self._parse_columns()        
         self.sample_ids = (df['id.layer_local_c'].values if 'id.layer_local_c' 
                            in df.columns else np.arange(len(df)))
 
-# %% ../../nbs/01_datasets.ossl.ipynb 4
+# %% ../../nbs/01_datasets.ossl.ipynb 6
 @patch
 def _parse_columns(self:OSSLData):
     "Parse columns into visnir, mir and properties"
@@ -32,14 +35,19 @@ def _parse_columns(self:OSSLData):
     spectral_cols = set(self.visnir_cols + self.mir_cols)
     self.properties_cols = [c for c in self.df.columns if c not in spectral_cols]
 
-# %% ../../nbs/01_datasets.ossl.ipynb 5
-def get_cache_path(): return Path.home()/'.soilspecdata'
+# %% ../../nbs/01_datasets.ossl.ipynb 8
+def get_cache_path(
+    dest_dir: str='.soilspecdata', # Name of the cache directory
+    ) -> Path: # Path to the cache directory (~/dest_dir)
+    "Get cache path for OSSL data"
+    return Path.home()/dest_dir
 
-# %% ../../nbs/01_datasets.ossl.ipynb 6
-def get_ossl(url='https://storage.googleapis.com/soilspec4gg-public/ossl_all_L0_v1.2.csv.gz', # OSSL URL
-             force_download=False # if True, force download
-             ):
-    "Get OSSL data"
+# %% ../../nbs/01_datasets.ossl.ipynb 12
+def get_ossl(
+    url='https://storage.googleapis.com/soilspec4gg-public/ossl_all_L0_v1.2.csv.gz', # OSSL data gzipped file URL
+    force_download=False # if True, force download
+    ):
+    "Load OSSL data from cache or download it"
     cache_path = get_cache_path()/'ossl_v1.2.csv.gz'
     if not cache_path.exists() or force_download:
         cache_path.parent.mkdir(exist_ok=True)
@@ -93,42 +101,44 @@ def get_ossl(url='https://storage.googleapis.com/soilspec4gg-public/ossl_all_L0_
                      parse_dates=date_columns)
     return OSSLData(df)
 
-# %% ../../nbs/01_datasets.ossl.ipynb 9
+# %% ../../nbs/01_datasets.ossl.ipynb 16
 @patch
-def _get_valid_spectra_mask(self:OSSLData, spectra_cols):
-    """Return mask for samples with all non-null values in spectra"""
+def _get_valid_spectra_mask(self:OSSLData, 
+                            spectra_cols: List[str] # Spectra column names
+                            ) -> np.ndarray: # Mask
+    "Return mask for samples with all non-null values in spectra"
     return self.df[spectra_cols].notna().all(axis=1)
 
-# %% ../../nbs/01_datasets.ossl.ipynb 11
+# %% ../../nbs/01_datasets.ossl.ipynb 21
 @patch
 def _extract_wavenumbers(self:OSSLData, 
                          cols: List[str] # column names
                          ):
-    "Extract wavelengths from column names and convert to wavenumbers for VISNIR"
+    "Extract wavenumbers from spectral column names"
     ws = np.array([int(re.search(r'\.(\d+)_', c).group(1)) for c in cols])
     if 'visnir' in cols[0].lower(): 
         return np.array([int(1e7 / w) for w in ws])
     return ws
 
-# %% ../../nbs/01_datasets.ossl.ipynb 14
+# %% ../../nbs/01_datasets.ossl.ipynb 25
 @patch
 def _extract_measurement_type(self:OSSLData, 
-                              cols: List[str] # column names
-                              ):
+                              cols: List[str] # Spectral column names
+                              ) -> str: # `abs` (Absorbance) or `ref` (Reflectance)
     "Extract measurement type from column names"
     types = set(re.search(r'_(\w+)$', c).group(1) for c in cols)
     assert len(types) == 1, f"Mixed measurement types found: {types}"
     return types.pop()
 
-# %% ../../nbs/01_datasets.ossl.ipynb 16
+# %% ../../nbs/01_datasets.ossl.ipynb 29
 @patch
 def _filter_wavelength_range(self:OSSLData, 
-                             wavenumbers: np.ndarray, # wavenumbers
-                             spectra: np.ndarray, # spectra
-                             cols: List[str], # column names
-                             wmin: Optional[int]=None, # min wavenumber
-                             wmax: Optional[int]=None # max wavenumber
-                             ):
+                             wavenumbers: np.ndarray, # Wavenumbers
+                             spectra: np.ndarray, # Spectra
+                             cols: List[str], # Column names
+                             wmin: Optional[int]=None, # Min wavenumber
+                             wmax: Optional[int]=None # Max wavenumber
+                             ) -> Tuple[np.ndarray, np.ndarray, List[str]]: # Filtered wavenumbers, spectra, columns
     "Filter spectra based on wavenumber range"
     if wmin is not None:
         assert wmin >= wavenumbers.min(), f"wmin ({wmin}) must be >= minimum wavenumber ({wavenumbers.min()})"
@@ -144,42 +154,38 @@ def _filter_wavelength_range(self:OSSLData,
         mask &= wavenumbers <= wmax
     return wavenumbers[mask], spectra[:, mask], [cols[i] for i in np.where(mask)[0]]
 
-# %% ../../nbs/01_datasets.ossl.ipynb 18
+# %% ../../nbs/01_datasets.ossl.ipynb 33
 @patch 
 def get_visnir(self:OSSLData, 
-               wmin: Optional[int]=4000, # min wavenumber
-               wmax: Optional[int]=25000, # max wavenumber
-               require_valid: bool=True # if True, only return samples with no null values
-               ):
+               wmin: Optional[int]=4000, # Min wavenumber
+               wmax: Optional[int]=25000, # Max wavenumber
+               ) -> SpectraData: # VISNIR data
     "Get VISNIR spectra within specified wavenumber range"
+    
     wavenumbers = self._extract_wavenumbers(self.visnir_cols)
     spectra = self.df[self.visnir_cols].values
     wavenumbers, _, filtered_cols = self._filter_wavelength_range(
         wavenumbers, spectra, self.visnir_cols, wmin, wmax
     )
     
-    if require_valid:
-        valid_mask = self._get_valid_spectra_mask(filtered_cols)
-        df_subset = self.df[valid_mask]
-        sample_ids = self.sample_ids[valid_mask]
-    else:
-        df_subset = self.df
-        sample_ids = self.sample_ids
+    valid_mask = self._get_valid_spectra_mask(filtered_cols)
+    df_subset = self.df[valid_mask]
+    sample_ids = self.sample_ids[valid_mask]
         
     spectra = df_subset[filtered_cols].values
     measurement_type = self._extract_measurement_type(filtered_cols)
     return SpectraData(
         wavenumbers[::-1], 
         spectra[:, ::-1], 
-        measurement_type, sample_ids)
+        measurement_type, 
+        sample_ids)
 
-# %% ../../nbs/01_datasets.ossl.ipynb 20
+# %% ../../nbs/01_datasets.ossl.ipynb 36
 @patch 
 def get_mir(self:OSSLData, 
-            wmin: Optional[int]=600, # min wavenumber
-            wmax: Optional[int]=4000, # max wavenumber
-            require_valid: bool=True # if True, only return samples with no null values
-            ):
+            wmin: Optional[int]=600, # Min wavenumber
+            wmax: Optional[int]=4000, # Max wavenumber
+            ) -> SpectraData: # MIR data
     "Get MIR spectra within specified wavenumber range"
     wavenumbers = self._extract_wavenumbers(self.mir_cols)
     spectra = self.df[self.mir_cols].values
@@ -187,25 +193,21 @@ def get_mir(self:OSSLData,
         wavenumbers, spectra, self.mir_cols, wmin, wmax
     )
     
-    if require_valid:
-        valid_mask = self._get_valid_spectra_mask(filtered_cols)
-        df_subset = self.df[valid_mask]
-        sample_ids = self.sample_ids[valid_mask]
-    else:
-        df_subset = self.df
-        sample_ids = self.sample_ids
+    valid_mask = self._get_valid_spectra_mask(filtered_cols)
+    df_subset = self.df[valid_mask]
+    sample_ids = self.sample_ids[valid_mask]
         
     spectra = df_subset[filtered_cols].values
     measurement_type = self._extract_measurement_type(filtered_cols)
     
     return SpectraData(wavenumbers, spectra, measurement_type, sample_ids)
 
-# %% ../../nbs/01_datasets.ossl.ipynb 22
+# %% ../../nbs/01_datasets.ossl.ipynb 39
 @patch
 def get_properties(self:OSSLData, 
-                   properties=None, # properties
+                   properties=None, # Properties
                    require_complete: bool=False # if True, only return samples with no null values
-                   ):
+                   ) -> pd.DataFrame: # Selected properties data
     "Get properties data with sample IDs"
     if properties is None:
         properties = self.properties_cols
@@ -221,28 +223,18 @@ def get_properties(self:OSSLData,
         return df_subset.dropna()
     return df_subset
 
-# %% ../../nbs/01_datasets.ossl.ipynb 29
+# %% ../../nbs/01_datasets.ossl.ipynb 46
 @patch
 def get_aligned_data(self:OSSLData, 
-                    spectra_data: SpectraData, # spectra data
-                    target_cols: Union[str, List[str]] # target columns
-                    ): 
-    "Get aligned spectra and target data for ML, along with their sample IDs."
-    # Get targets with complete data
+                    spectra_data: SpectraData, # Spectra data
+                    target_cols: Union[str, List[str]] # Target columns
+                    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]: # Aligned spectra, targets, sample IDs
+    "Get aligned spectra and target data for ML, along with their sample IDs"
     targets = self.get_properties(target_cols, require_complete=True)
-    
-    # Find common IDs between spectra and targets
-    common_ids = list(set(spectra_data.sample_ids) & set(targets.index))
-    
-    # Create index mapping for efficient lookup
-    spectra_id_to_idx = {id_: idx for idx, id_ in enumerate(spectra_data.sample_ids)}
-    
-    # Get indices for alignment
-    indices = [spectra_id_to_idx[id_] for id_ in common_ids]
-    
-    # Align the data
-    features = spectra_data.spectra[indices]
-    targets = targets.loc[common_ids].values
-    sample_ids = np.array(common_ids)
+    mir_df = pd.DataFrame(spectra_data.spectra, columns=spectra_data.wavenumbers, index=spectra_data.sample_ids)
+    common_df = mir_df.join(targets, how='inner')
+    features = common_df.iloc[:, :len(spectra_data.wavenumbers)].values
+    targets = common_df.iloc[:, len(spectra_data.wavenumbers):].values
+    sample_ids = common_df.index.values
     
     return features, targets, sample_ids
