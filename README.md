@@ -10,8 +10,11 @@
 ## Installation
 
 ``` sh
-pip install soilspecdata
+pip install -U soilspecdata
 ```
+
+The `-U` flag is used to update the package to the latest version. This
+is important to ensure that you have the latest features and bug fixes.
 
 If you want to install the development version, run in the project root:
 
