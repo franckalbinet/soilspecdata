@@ -110,6 +110,9 @@ indexed by sample ID (`id`):
 
 ``` python
 properties = ossl.get_properties(['cec_usda.a723_cmolc.kg'], require_complete=True)
+```
+
+``` python
 properties.head()
 ```
 
@@ -320,7 +323,7 @@ plt.xlabel('Wavenumber (cm⁻¹)')
 plt.ylabel('Absorbance');
 ```
 
-![](index_files/figure-commonmark/cell-11-output-1.png)
+![](index_files/figure-commonmark/cell-12-output-1.png)
 
 ## Data Structure
 
