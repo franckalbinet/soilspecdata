@@ -142,10 +142,6 @@ properties.head()
 > `require_complete=True` ensures that only non null values are returned
 > in selected columns (here `cec_usda.a723_cmolc.kg`).
 
-``` python
-Here below, only the first 5 samples identified by their id are returned as the CEC is not available for all samples.
-```
-
 For more details on the OSSL dataset and its variables, see the [OSSL
 documentation](https://soilspectroscopy.github.io/ossl-manual/db-desc.html).
 Any column name part of the `ossl.properties_cols` list can be used as a
@@ -324,7 +320,7 @@ plt.xlabel('Wavenumber (cm⁻¹)')
 plt.ylabel('Absorbance');
 ```
 
-![](index_files/figure-commonmark/cell-12-output-1.png)
+![](index_files/figure-commonmark/cell-11-output-1.png)
 
 ## Data Structure
 
