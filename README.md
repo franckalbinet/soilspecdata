@@ -104,16 +104,52 @@ print(visnir_data)
 
 ### Getting soil properties and other metadata
 
-For instance, to get the CEC (in cmolc/kg) of the samples:
+Example: get **Cation Exchange Capacity (CEC)** measurements (in
+cmolc/kg) for all samples. Results are returned as a `pd.DataFrame`
+indexed by sample ID (`id`):
 
 ``` python
 properties = ossl.get_properties(['cec_usda.a723_cmolc.kg'], require_complete=True)
+properties.head()
+```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+&#10;    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+&#10;    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+|        | cec_usda.a723_cmolc.kg |
+|--------|------------------------|
+| id     |                        |
+| S40857 | 6.633217               |
+| S40858 | 3.822628               |
+| S40859 | 3.427324               |
+| S40860 | 1.906545               |
+| S40861 | 13.403203              |
+
+</div>
+
+> [!NOTE]
+>
+> `require_complete=True` ensures that only non null values are returned
+> in selected columns (here `cec_usda.a723_cmolc.kg`).
+
+``` python
+Here below, only the first 5 samples identified by their id are returned as the CEC is not available for all samples.
 ```
 
 For more details on the OSSL dataset and its variables, see the [OSSL
 documentation](https://soilspectroscopy.github.io/ossl-manual/db-desc.html).
 Any column name part of the `ossl.properties_cols` list can be used as a
-target or metadatavariable.
+target or metadata variable.
 
 ``` python
 ossl.properties_cols
@@ -288,7 +324,7 @@ plt.xlabel('Wavenumber (cm⁻¹)')
 plt.ylabel('Absorbance');
 ```
 
-![](index_files/figure-commonmark/cell-11-output-1.png)
+![](index_files/figure-commonmark/cell-12-output-1.png)
 
 ## Data Structure
 
