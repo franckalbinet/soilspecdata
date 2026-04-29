@@ -1,3 +1,32 @@
 [build-system]
-requires = ["setuptools>=64.0"]
+requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "soilspecdata"
+dynamic = ["version"]
+description = "Download and load soil spectral data"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "Apache-2.0"}
+authors = [{name = "Franck Albinet", email = "franckalbinet@gmail.com"}]
+keywords = ['nbdev', 'jupyter', 'notebook', 'python']
+classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
+dependencies = ['fastcore', 'pandas', 'numpy', 'matplotlib']
+
+[project.urls]
+Repository = "https://github.com/franckalbinet/soilspecdata"
+Documentation = "https://franckalbinet.github.io/soilspecdata"
+
+[project.entry-points.nbdev]
+soilspecdata = "soilspecdata._modidx:d"
+
+[tool.setuptools.dynamic]
+version = {attr = "soilspecdata.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["soilspecdata"]
+
+[tool.nbdev]
+custom_sidebar = true
+title = 'SoilSpecData'
