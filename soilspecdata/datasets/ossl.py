@@ -5,7 +5,7 @@
 # %% auto #0
 __all__ = ['OSSLData', 'get_cache_path', 'get_ossl']
 
-# %% ../../nbs/01_datasets.ossl.ipynb #3f7f7347
+# %% ../../nbs/01_datasets.ossl.ipynb #002d9602
 from fastcore.all import *
 from urllib.request import urlretrieve
 from pathlib import Path
@@ -14,7 +14,7 @@ import numpy as np
 import re
 from ..types import *
 
-# %% ../../nbs/01_datasets.ossl.ipynb #71bc364b
+# %% ../../nbs/01_datasets.ossl.ipynb #6f0e7d32
 class OSSLData:
     "OSSL (Open Soil Spectral Library) data container"
     def __init__(self, 
@@ -25,7 +25,7 @@ class OSSLData:
         self.sample_ids = (df['id.layer_local_c'].values if 'id.layer_local_c' 
                            in df.columns else np.arange(len(df)))
 
-# %% ../../nbs/01_datasets.ossl.ipynb #5237b6e8
+# %% ../../nbs/01_datasets.ossl.ipynb #2b607e7d
 @patch
 def _parse_columns(self:OSSLData):
     "Parse columns into visnir, mir and properties"
@@ -34,14 +34,14 @@ def _parse_columns(self:OSSLData):
     spectral_cols = set(self.visnir_cols + self.mir_cols)
     self.properties_cols = [c for c in self.df.columns if c not in spectral_cols]
 
-# %% ../../nbs/01_datasets.ossl.ipynb #caf5c73d
+# %% ../../nbs/01_datasets.ossl.ipynb #593f3831
 def get_cache_path(
     dest_dir: str='.soilspecdata', # Name of the cache directory
     ) -> Path: # Path to the cache directory (~/dest_dir)
     "Get cache path for OSSL data"
     return Path.home()/dest_dir
 
-# %% ../../nbs/01_datasets.ossl.ipynb #750cc5bb
+# %% ../../nbs/01_datasets.ossl.ipynb #fd279b7a
 def get_ossl(
       url='https://storage.googleapis.com/soilspec4gg-public/ossl_all_L0_v1.2.csv.gz', # OSSL data gzipped file URL
       force_download=False # if True, force download
@@ -54,7 +54,7 @@ def get_ossl(
       df = pd.read_csv(cache_path, compression='gzip', low_memory=False)
       return OSSLData(df)
 
-# %% ../../nbs/01_datasets.ossl.ipynb #6a3f303e
+# %% ../../nbs/01_datasets.ossl.ipynb #93985934
 @patch
 def _get_valid_spectra_mask(self:OSSLData, 
                             spectra_cols: List[str] # Spectra column names
@@ -62,7 +62,7 @@ def _get_valid_spectra_mask(self:OSSLData,
     "Return mask for samples with all non-null values in spectra"
     return self.df[spectra_cols].notna().all(axis=1)
 
-# %% ../../nbs/01_datasets.ossl.ipynb #59a4bb12
+# %% ../../nbs/01_datasets.ossl.ipynb #939eed5a
 @patch
 def _extract_wavenumbers(self:OSSLData, 
                          cols: List[str] # column names
@@ -73,7 +73,7 @@ def _extract_wavenumbers(self:OSSLData,
         return np.array([int(1e7 / w) for w in ws])
     return ws
 
-# %% ../../nbs/01_datasets.ossl.ipynb #5ca1be91
+# %% ../../nbs/01_datasets.ossl.ipynb #e4cc1b8e
 @patch
 def _extract_measurement_type(self:OSSLData, 
                               cols: List[str] # Spectral column names
@@ -83,7 +83,7 @@ def _extract_measurement_type(self:OSSLData,
     assert len(types) == 1, f"Mixed measurement types found: {types}"
     return types.pop()
 
-# %% ../../nbs/01_datasets.ossl.ipynb #cd7391fd
+# %% ../../nbs/01_datasets.ossl.ipynb #90f8fe64
 @patch
 def _filter_wavelength_range(self:OSSLData, 
                              wavenumbers: np.ndarray, # Wavenumbers
@@ -107,7 +107,7 @@ def _filter_wavelength_range(self:OSSLData,
         mask &= wavenumbers <= wmax
     return wavenumbers[mask], spectra[:, mask], [cols[i] for i in np.where(mask)[0]]
 
-# %% ../../nbs/01_datasets.ossl.ipynb #432795c9
+# %% ../../nbs/01_datasets.ossl.ipynb #f59cc524
 @patch 
 def get_visnir(self:OSSLData, 
                wmin: Optional[int]=4000, # Min wavenumber
@@ -133,7 +133,7 @@ def get_visnir(self:OSSLData,
         measurement_type, 
         sample_ids)
 
-# %% ../../nbs/01_datasets.ossl.ipynb #9b808706
+# %% ../../nbs/01_datasets.ossl.ipynb #f5f88422
 @patch 
 def get_mir(self:OSSLData, 
             wmin: Optional[int]=600, # Min wavenumber
@@ -155,7 +155,7 @@ def get_mir(self:OSSLData,
     
     return SpectraData(wavenumbers, spectra, measurement_type, sample_ids)
 
-# %% ../../nbs/01_datasets.ossl.ipynb #c502a3a8
+# %% ../../nbs/01_datasets.ossl.ipynb #ebe9d978
 @patch
 def get_properties(self:OSSLData, 
                    properties=None, # Properties
@@ -176,7 +176,7 @@ def get_properties(self:OSSLData,
         return df_subset.dropna()
     return df_subset
 
-# %% ../../nbs/01_datasets.ossl.ipynb #947a7c3f
+# %% ../../nbs/01_datasets.ossl.ipynb #be231f89
 @patch
 def get_aligned_data(self:OSSLData, 
                     spectra_data: SpectraData, # Spectra data

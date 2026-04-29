@@ -5,11 +5,11 @@
 # %% auto #0
 __all__ = ['SpectraData']
 
-# %% ../nbs/00_types.ipynb #657a50f9
+# %% ../nbs/00_types.ipynb #165defde
 from dataclasses import dataclass
 import numpy as np
 
-# %% ../nbs/00_types.ipynb #1703ceda
+# %% ../nbs/00_types.ipynb #1d3a0275
 @dataclass
 class SpectraData:
     wavenumbers: np.ndarray
