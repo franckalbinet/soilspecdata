@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 0.2.0
+
+### Breaking Changes
+
+- Remove the names deprecated in 0.1.0: `get_ossl`, `get_mir`, `get_visnir`, `get_aligned_data`, `get_properties`, `OSSLData`, `SpectraData` and `properties_cols` ([#10](https://github.com/franckalbinet/soilspecdata/issues/10))
+
+
 ## 0.1.0
 
 ### Breaking Changes
