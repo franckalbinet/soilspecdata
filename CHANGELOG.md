@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 0.2.1
+
+### New Features
+
+- Import the whole API with `from soilspecdata.all import *` ([#11](https://github.com/franckalbinet/soilspecdata/issues/11))
+
+
 ## 0.2.0
 
 ### Breaking Changes
