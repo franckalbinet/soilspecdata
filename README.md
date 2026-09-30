@@ -33,10 +33,11 @@ pip install -e .[dev]
 
 ## Quick start
 
+`from soilspecdata.all import *` imports [`load_ossl`](https://franckalbinet.github.io/soilspecdata/datasets.ossl.html#load_ossl), [`OSSL`](https://franckalbinet.github.io/soilspecdata/datasets.ossl.html#ossl), [`Spectra`](https://franckalbinet.github.io/soilspecdata/types.html#spectra) and [`get_cache_path`](https://franckalbinet.github.io/soilspecdata/datasets.ossl.html#get_cache_path). Each also has its own module, such as `soilspecdata.datasets.ossl`, for explicit imports.
 Load OSSL, then get the MIR spectra and CEC values of every sample that has both. The first call downloads about 1 GB. Later calls read the cached file instead. Loading took 24 seconds on an Apple silicon Mac. Memory use peaks at about 12 GB while pandas reads the file. The loaded data then takes 3.5 GB:
 
 ``` python
-from soilspecdata.datasets.ossl import load_ossl
+from soilspecdata.all import *
 ```
 
 ``` python
