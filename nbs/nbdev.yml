@@ -4,6 +4,11 @@ project:
 website:
   title: "SoilSpecData"
   site-url: "https://franckalbinet.github.io/soilspecdata"
-  description: "Download and load soil spectral data"
+  description: "Load the Open Soil Spectral Library (OSSL) as spectra and soil properties ready for machine learning"
   repo-branch: main
   repo-url: "https://github.com/franckalbinet/soilspecdata"
+
+format-links:
+  - html
+  - format: commonmark
+    text: Markdown

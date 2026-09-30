@@ -12,7 +12,7 @@ format:
     highlight-style: arrow
     grid:
       sidebar-width: 180px
-      body-width: 980px
+      body-width: 800px
       margin-width: 300px
       gutter-width: 1.0rem
 
