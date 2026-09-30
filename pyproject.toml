@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=64"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,10 +8,10 @@ dynamic = ["version"]
 description = "Load the Open Soil Spectral Library (OSSL) as spectra and soil properties ready for machine learning"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
 authors = [{name = "Franck Albinet", email = "franckalbinet@gmail.com"}]
 keywords = ['nbdev', 'jupyter', 'notebook', 'python']
-classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 3 - Alpha", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
+classifiers = ["Natural Language :: English", "Intended Audience :: Developers", "Development Status :: 4 - Beta", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3 :: Only"]
 dependencies = ['fastcore', 'pandas', 'numpy', 'matplotlib']
 
 [project.optional-dependencies]
@@ -28,7 +28,7 @@ soilspecdata = "soilspecdata._modidx:d"
 version = {attr = "soilspecdata.__version__"}
 
 [tool.setuptools.packages.find]
-include = ["soilspecdata"]
+include = ["soilspecdata*"]
 
 [tool.nbdev]
 custom_sidebar = true

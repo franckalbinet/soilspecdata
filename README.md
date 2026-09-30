@@ -211,9 +211,9 @@ X.shape, y.shape, ids.shape
 
     ((50825, 1701), (50825, 2), (50825,))
 
-## Upgrading from 0.0.10
+## Upgrading from 0.0.x
 
-Version 0.1.0 changes the API:
+Version 0.1.0 changed the API. To update code written for version 0.0.x:
 
 - `get_ossl(url, force_download, level)` is now `load_ossl(level, url, force_download)`.
 - `get_mir` and `get_visnir` are now `mir` and `visnir`.
@@ -222,7 +222,7 @@ Version 0.1.0 changes the API:
 - `OSSLData`, `SpectraData` and `properties_cols` are now [`OSSL`](https://franckalbinet.github.io/soilspecdata/datasets.ossl.html#ossl), [`Spectra`](https://franckalbinet.github.io/soilspecdata/types.html#spectra) and `meta_cols`.
 - `ossl.df` is indexed by sample ID (`id.layer_uuid_txt`) instead of by row number.
 
-The old names still work in 0.1.0. The next release removes them. [`get_ossl`](https://franckalbinet.github.io/soilspecdata/datasets.ossl.html#get_ossl), `get_mir`, `get_visnir` and `get_aligned_data` also warn with a `DeprecationWarning`.
+Version 0.1.0 still accepted the old names. Version 0.2.0 removes them. If your code runs on 0.1.0 without a `DeprecationWarning`, and doesn’t use `OSSLData`, `SpectraData`, `properties_cols` or `get_properties`, it runs on 0.2.0 unchanged.
 
 ## Contributing
 
@@ -243,4 +243,4 @@ Check these terms before you publish or share results that use those datasets.
 ## Citation(s)
 
 - [OSSL Library](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0296545): Safanelli, J.L., Hengl, T., Parente, L.L., Minarik, R., Bloom, D.E., Todd-Brown, K., Gholizadeh, A., Mendes, W. de S., Sanderman, J., 2025. Open Soil Spectral Library (OSSL): Building reproducible soil calibration models through open development and community engagement. PLOS ONE 20, e0296545. https://doi.org/10.1371/journal.pone.0296545
-- [SoilSpecData](https://github.com/franckalbinet/soilspecdata): Albinet, F., 2026. SoilSpecData, version 0.1.0. https://github.com/franckalbinet/soilspecdata
+- [SoilSpecData](https://github.com/franckalbinet/soilspecdata): Albinet, F., 2026. SoilSpecData, version 0.2.0. https://github.com/franckalbinet/soilspecdata
