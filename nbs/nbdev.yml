@@ -4,7 +4,7 @@ project:
 website:
   title: "SoilSpecData"
   site-url: "https://franckalbinet.github.io/soilspecdata"
-  description: "Load the Open Soil Spectral Library (OSSL) as spectra and soil properties ready for machine learning"
+  description: "Load soil spectral data, such as the Open Soil Spectral Library (OSSL) and Thermo OMNIC .spa files, as spectra and soil properties ready for machine learning"
   repo-branch: main
   repo-url: "https://github.com/franckalbinet/soilspecdata"
 

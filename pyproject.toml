@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "soilspecdata"
 dynamic = ["version"]
-description = "Load the Open Soil Spectral Library (OSSL) as spectra and soil properties ready for machine learning"
+description = "Load soil spectral data, such as the Open Soil Spectral Library (OSSL) and Thermo OMNIC .spa files, as spectra and soil properties ready for machine learning"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
