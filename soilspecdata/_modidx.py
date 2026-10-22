@@ -34,5 +34,7 @@ d = { 'settings': { 'branch': 'main',
                                                                                            'soilspecdata/datasets/ossl.py'),
                                             'soilspecdata.datasets.ossl.load_ossl': ( 'datasets.ossl.html#load_ossl',
                                                                                       'soilspecdata/datasets/ossl.py')},
+            'soilspecdata.readers': { 'soilspecdata.readers.load_spa': ('readers.html#load_spa', 'soilspecdata/readers.py'),
+                                      'soilspecdata.readers.read_spa': ('readers.html#read_spa', 'soilspecdata/readers.py')},
             'soilspecdata.types': { 'soilspecdata.types.Spectra': ('types.html#spectra', 'soilspecdata/types.py'),
                                     'soilspecdata.types.Spectra.__str__': ('types.html#spectra.__str__', 'soilspecdata/types.py')}}}

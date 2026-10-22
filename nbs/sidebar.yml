@@ -7,3 +7,4 @@ website:
         contents:
           - 00_types.ipynb
           - 01_datasets.ossl.ipynb
+          - 02_readers.ipynb
