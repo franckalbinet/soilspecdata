@@ -2,6 +2,13 @@
 
 <!-- do not remove -->
 
+## 0.2.2
+
+### New Features
+
+- Add `read_spa` and `load_spa`, to read Thermo OMNIC `.spa` files ([#12](https://github.com/franckalbinet/soilspecdata/issues/12))
+
+
 ## 0.2.1
 
 ### New Features
