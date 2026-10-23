@@ -148,15 +148,3 @@ def mir(
 ) -> Spectra: # MIR spectra, in increasing wavenumber order
     "Complete MIR spectra between `wmin` and `wmax`"
     return self._get_spectra(self.mir_cols, wmin, wmax)
-
-# %% ../../nbs/01_datasets.ossl.ipynb #be231f89
-@patch
-def xy(
-    self:Spectra,
-    target_cols:Union[str, List] # Target column name or names
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]: # Spectra, targets and sample IDs, row by row
-    "Spectra and targets of the samples that have both, for machine learning"
-    targets = self.source[listify(target_cols)].dropna()
-    aligned = pd.DataFrame(self.spectra, index=self.sample_ids).join(targets, how='inner')
-    n = self.spectra.shape[1]
-    return aligned.iloc[:, :n].to_numpy(), aligned.iloc[:, n:].to_numpy(), aligned.index.to_numpy()

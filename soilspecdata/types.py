@@ -10,6 +10,9 @@ __all__ = ['Spectra']
 # %% ../nbs/00_types.ipynb #165defde
 from dataclasses import dataclass, field, fields
 import numpy as np
+import pandas as pd
+from fastcore.basics import patch, listify
+from typing import Union, List, Tuple
 
 # %% ../nbs/00_types.ipynb #1d3a0275
 @dataclass
@@ -19,7 +22,7 @@ class Spectra:
     spectra:np.ndarray # One row per sample, one column per wavenumber
     measurement_type:str # `abs` (absorbance) or `ref` (reflectance)
     sample_ids:np.ndarray # Sample ID of each row of `spectra`
-    source:object=field(default=None, repr=False, compare=False) # Object the spectra came from, such as an `OSSL`
+    source:object=field(default=None, repr=False, compare=False) # Object holding the sample properties, such as an `OSSL`
 
     def __str__(self):
         'Pretty print the Spectra object'
@@ -42,3 +45,15 @@ class Spectra:
         
         return '\n\n'.join(f"{title}:\n{'-'*len(title)}\n{content}" 
             for title, content in sections)
+
+# %% ../nbs/00_types.ipynb #be231f89
+@patch
+def xy(
+    self:Spectra,
+    target_cols:Union[str, List] # Target column name or names
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]: # Spectra, targets and sample IDs, row by row
+    "Spectra and targets of the samples that have both, for machine learning"
+    targets = self.source[listify(target_cols)].dropna()
+    aligned = pd.DataFrame(self.spectra, index=self.sample_ids).join(targets, how='inner')
+    n = self.spectra.shape[1]
+    return aligned.iloc[:, :n].to_numpy(copy=True), aligned.iloc[:, n:].to_numpy(copy=True), aligned.index.to_numpy()
