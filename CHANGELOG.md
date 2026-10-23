@@ -2,6 +2,17 @@
 
 <!-- do not remove -->
 
+## 0.2.3
+
+### New Features
+
+- Define `Spectra.xy` in `soilspecdata.types` ([#13](https://github.com/franckalbinet/soilspecdata/issues/13))
+
+### Bugs Squashed
+
+- `Spectra.xy` returns read-only arrays ([#14](https://github.com/franckalbinet/soilspecdata/issues/14))
+
+
 ## 0.2.2
 
 ### New Features
