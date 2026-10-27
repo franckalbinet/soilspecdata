@@ -4,6 +4,10 @@
 
 ## 0.3.0
 
+### New Features
+
+- Add `load_ringtrial`, to load the MIR ring trial of Safanelli et al. (2023) ([#15](https://github.com/franckalbinet/soilspecdata/issues/15))
+
 
 ## 0.2.3
 
