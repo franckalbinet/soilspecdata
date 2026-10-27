@@ -32,4 +32,5 @@ include = ["soilspecdata*"]
 
 [tool.nbdev]
 custom_sidebar = true
+tst_flags = 'rtdata'
 title = 'SoilSpecData'

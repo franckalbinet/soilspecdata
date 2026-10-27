@@ -8,3 +8,4 @@ website:
           - 00_types.ipynb
           - 01_datasets.ossl.ipynb
           - 02_readers.ipynb
+          - 03_datasets.ringtrial.ipynb
